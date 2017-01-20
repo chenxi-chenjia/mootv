@@ -1,0 +1,35 @@
+{
+  "name": "moomtv",
+  "version": "1.0.0",
+  "description": "社交型网站",
+  "main": "index.js",
+  "dependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "express": "^4.14.0",
+    "init": "^0.1.2",
+    "iscroll": "^5.2.0",
+    "jquery": "^3.1.1",
+    "jsonp": "^0.2.1",
+    "md5": "^2.2.1",
+    "qiniu-js": "^1.0.14-beta",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-iscroll": "^1.1.1",
+    "react-route": "^1.0.3",
+    "react-router": "^3.0.0",
+    "react-swipe": "^5.0.6",
+    "sha1": "^1.1.1",
+    "swipe-js-iso": "^2.0.3",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
