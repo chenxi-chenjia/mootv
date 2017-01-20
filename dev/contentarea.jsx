@@ -28,11 +28,15 @@ class content extends React.Component{
 				)
 			}
 		})
+		var t='foundSecond/:'+this.props.id;
 		return(
 			<div className="praiseComment"  >
-				<ul>
-					{lis}
-				</ul>
+				<Link to={t} >
+					<ul>
+						{lis}
+					</ul>
+				</Link>
+					
 			</div>
 		)
 	}

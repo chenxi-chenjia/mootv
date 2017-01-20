@@ -30,38 +30,50 @@ class Mine extends React.Component{
 
 	//修改图像
 	changeAvater(e){
-		var self=this;
-		var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
-        for (var i = 0, len = files.length; i < len; ++i) {
-        	if(i<9){
-        		 var file = files[i];
-	            if (url) {
-	                src =url.createObjectURL(file);
-	            } else {
-	                src = e.target.result;
-	            }
-        	}
-		}
-		
-		var avater = new FormData();
-        //为FormData对象添加数据
-        avater.append('file',$("#uploaderInput")[0].files[0]);
-		var Userid=JSON.parse(localStorage.getItem('moomtvUser')).UserID;
-        $.post({
-			url:pf.u+'uploadfile/UploadHeader/NonceStr-'+pf.m+'__Sign-'+pf.c+'__Userid-'+Userid,
-			data:avater,
-			cache: false,
-            contentType: false,       
-            processData: false,
-			success:function(e){
-				var v=JSON.parse(e);
-				if(v.ResCode==='10000'){
-					self.setState({
-						choseAvater:src
-					})
-				}
+		if(localStorage.moomtvUser){
+			var self=this;
+			var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+	        for (var i = 0, len = files.length; i < len; ++i) {
+	        	if(i<9){
+	        		 var file = files[i];
+		            if (url) {
+		                src =url.createObjectURL(file);
+		            } else {
+		                src = e.target.result;
+		            }
+	        	}
 			}
-		})
+			var avater = new FormData();
+	        //为FormData对象添加数据
+	        avater.append('file',$("#uploaderInput")[0].files[0]);
+			var Userid=JSON.parse(localStorage.getItem('moomtvUser')).UserID;
+	        $.post({
+				url:pf.u+'uploadfile/UploadHeader/NonceStr-'+pf.m+'__Sign-'+pf.c+'__Userid-'+Userid,
+				data:avater,
+				cache: false,
+	            contentType: false,       
+	            processData: false,
+				success:function(e){
+					var v=JSON.parse(e);
+					if(v.ResCode==='10000'){
+						self.setState({
+							choseAvater:src
+						})
+						$.post({
+							url:pf.u+'GetUserIndex/',
+							data:pf.d+',"Uid":"'+Userid+'","Userid":"'+Userid+'"}',
+							success:function(res){
+								var vs=JSON.parse(res);
+								if(vs.ResCode==='10000'){
+									localStorage.moomtvUser=JSON.stringify(vs.Data[0]);
+								}
+							}
+						})
+					}
+				}
+			})
+		}
+			
 	}
 
 	//删除判断加载数量信息

@@ -13,9 +13,9 @@ class btn extends React.Component{
 		this.focus=this.focus.bind(this);
 	}
 	componentDidMount(){
-		var f=this.props.data==='0'?true:false;
+		var f=this.props.data=='0'?true:false;
 		this.setState({
-			flag:true
+			flag:f
 		})
 	}
 	//关注按钮

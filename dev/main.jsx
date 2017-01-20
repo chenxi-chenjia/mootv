@@ -30,11 +30,11 @@ const week=require('./starOfWeek.jsx');
 //////////////////////////////////////////////////////////
 //路由配置
 
-import { Router, Route, browserHistory  } from 'react-router';
+import { Router, Route, hashHistory   } from 'react-router';
 
 
 ReactDOM.render((
-	<Router history={browserHistory} >
+	<Router history={hashHistory } >
 		<Route path='/'  component={Select.Select} ></Route>
 		<Route path='found' component={Found.Found} />
 		<Route path='message' component={Message.Message} />

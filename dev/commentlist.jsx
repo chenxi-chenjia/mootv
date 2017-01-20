@@ -20,9 +20,12 @@ class list extends React.Component{
 		this.showloading=this.showloading.bind(this);
 		this.showmenu=this.showmenu.bind(this);
 		this.input=this.input.bind(this);
+		this.refreshDiclis=this.refreshDiclis.bind(this);
 	}
 	
-
+	refreshDiclis(e){
+		this.props.refreshDiclis(e);
+	}
 	
 	componentWillMount(){
 		var data=this.props.data;
@@ -52,7 +55,6 @@ class list extends React.Component{
 				url:u,
 				success:function(e){
 					var v=JSON.parse(e);
-					console.log(v);
 					if(v.ResCode==='10000'){
 						self.setState({
 							replay:v.Data
@@ -90,7 +92,7 @@ class list extends React.Component{
 							<div className="releaseTime">{v.Dateline} </div>
 							
 							<div>
-								<menu.menu id={this.props.id} iscmt={true} cid={v.ID}  passiveUserid={v.userinfo.UserID}/>
+								<menu.menu id={this.props.id} iscmt={true} cid={v.ID} DeleteCommend={this.refreshDiclis} passiveUserid={v.userinfo.UserID}/>
 							</div>
 							
 								

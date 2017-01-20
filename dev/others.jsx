@@ -174,10 +174,10 @@ class other extends React.Component{
 							<div className="myAvater" style={{backgroundImage:bg}} ></div>
 							<div className="myName">{v.UserNickName}</div>
 							<div className="informationbox">
-								<div className="sex">{sex} </div>
-								<div className="age">{v.UserAge} </div>
-								<div className="pro">{v.UserPro} </div>
-								<div className="city">{v.UserCity} </div>
+								<div className="sex">  {sex} </div>
+								<div className="age"> {v.UserAge}岁 </div>
+								<div className="pro">  {v.UserPro} </div>
+								<div className="city">  {v.UserCity} </div>
 							</div>
 							<focusbtn.btn data={v.IsFocus} hasUser={this.showloading} id={id} />
 						</div>
@@ -213,6 +213,9 @@ class other extends React.Component{
 			<div id='mine' className='other'>
 				{dl}
 				<selectDynamic.Select  hasUser={this.showloading} data={this.state.list}  />
+				<div className="Return">
+					<Link to='/'></Link>
+				</div>
 				<loading.loading offload={this.offload} loading={this.state.loading} />
 				<div className={ac}
 				onClick={this.addajax}

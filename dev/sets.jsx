@@ -145,6 +145,8 @@ class set extends React.Component{
 		var Userid=this.state.Userid;
 		if(type=="nickname"){
 			if(this.state.nickname!=''){
+				var user=JSON.parse(localStorage.moomtvUser);
+				user.UserHeader=src;
 				var u=pf.u+'UpdatePersonInfo/';
 				var d=pf.d+',"Userid":"'+Userid+'","Type":"UserNickName","UserNickName":"'+this.state.nickname+'"}';
 				$.post({
@@ -156,12 +158,23 @@ class set extends React.Component{
 							self.setState({
 								successFlag:true
 							})
+							localStorage.moomtvUser=user;
 							setTimeout(function(){
 								self.setState({
-									successFlag:false,
+									successFlag:false
 								})
 								self.props.closeSets();
-							},2000)
+							},2000);
+							$.post({
+								url:pf.u+'GetUserIndex/',
+								data:pf.d+',"Uid":"'+Userid+'","Userid":"'+Userid+'"}',
+								success:function(res){
+									var vs=JSON.parse(res);
+									if(vs.ResCode==='10000'){
+										localStorage.moomtvUser=JSON.stringify(vs.Data[0]);
+									}
+								}
+							})
 						}
 					}
 				})

@@ -103,6 +103,7 @@ class seting extends React.Component{
 				<div className="set last">
 					
 					<div className="about lis">
+						<a href="https://www.moomtv.tv/moomtv"></a>
 						<div className="icon"></div>
 						<span className='font'>关于MOOMTV</span>
 						<div className="arrow"></div>

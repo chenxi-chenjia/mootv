@@ -48,7 +48,7 @@ class img extends React.Component{
 			var s=<ul>{lis}</ul>
 		}else if(data.Is_Pic==2){
 			var lis=data.PicList.map((v,i)=>{
-				return <video src={v} poster={v+'?vframe/jpg/offset/5'}  key={i} controls="controls"  preload="none" className='showVideo'></video>
+				return <video src={v} poster={v+'?vframe/jpg/offset/3'}  key={i} controls="controls"  preload="none" className='showVideo'></video>
 			})
 			var s=<div>{lis} </div>
 		}

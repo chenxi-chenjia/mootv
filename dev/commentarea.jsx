@@ -17,12 +17,14 @@ class comment extends React.Component{
 	}
 	
 	componentDidMount(){
-		var data=this.props.data.Comments;
-		var Userid=JSON.parse(localStorage.moomtvUser).UserID;
-		this.setState({
-			data:data,
-			Userid:Userid
-		})
+		if(localStorage.moomtvUser){
+			
+			var Userid=JSON.parse(localStorage.moomtvUser).UserID;
+			this.setState({
+				Userid:Userid
+			})
+		}
+			
 	}
 
 	showloading(e){
@@ -55,10 +57,10 @@ class comment extends React.Component{
 		}else{
 			var t='mine'
 		}
-		
+		var data=this.props.data.Comments;
 		return(
 			<div>
-				<content.content id={id} data={this.state.data} />
+				<content.content id={id} data={data} />
 				<div className="select-comments">
 					<div className="praiseNum" style={{display:(this.state.num>5?'block':'none')}} >
 						<Link to={t} >

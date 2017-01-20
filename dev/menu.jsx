@@ -72,7 +72,7 @@ class menu extends React.Component{
 							self.setState({
 								remandFlag:false
 							})
-							this.props.DeleteCommend();
+							self.props.DeleteCommend(id);
 						},1500)
 					}
 				}
@@ -133,7 +133,7 @@ class menu extends React.Component{
 					if(v.ResCode==='10000'){
 						$("body").off("touchmove");
 						self.setState({
-							remand:'删除成功',
+							remand:'举报成功',
 							remandFlag:true,
 							show:false
 						})
@@ -174,7 +174,7 @@ class menu extends React.Component{
 							self.setState({
 								remandFlag:false
 							})
-							browserHistory.push('mine');
+							window.location='https://m.moomtv.tv/#/mine';
 						},1500)
 					}
 				}
@@ -218,65 +218,68 @@ class menu extends React.Component{
 	}
 
 	render(){
-		//逻辑判断
-		var user=JSON.parse(localStorage.moomtvUser);
-		var admin=user.IsAdmin;
-		var Userid=user.UserID;
-		// 动态id
-		var id=this.props.id;
-		//发布动态人id
-		var passiveUserid=this.props.passiveUserid;
-		var god=false;
-		var isMine=false;
-		var d={class:'delete',name:'删除'};
-		var r={class:'recommend',name:'推荐'};
-		var t={class:'toReport',name:'举报'};
-		var dynamic=[];
-		var reply=[];
-		if(admin==1){
-			god=true;
-			dynamic=[d,r];
-			reply=[d];
-			if(Userid!=passiveUserid){
-				dynamic.push(t);
-				reply.push(t);
-			}
-		}else{
-			if(Userid==passiveUserid){
+		if(localStorage.moomtvUser){
+			//逻辑判断
+			var user=JSON.parse(localStorage.moomtvUser);
+			var admin=user.IsAdmin;
+			var Userid=user.UserID;
+			// 动态id
+			var id=this.props.id;
+			//发布动态人id
+			var passiveUserid=this.props.passiveUserid;
+			var god=false;
+			var isMine=false;
+			var d={class:'delete',name:'删除'};
+			var r={class:'recommend',name:'推荐'};
+			var t={class:'toReport',name:'举报'};
+			var dynamic=[];
+			var reply=[];
+			if(admin==1){
+				god=true;
+				dynamic=[d,r];
 				reply=[d];
-				dynamic=[d];
+				if(Userid!=passiveUserid){
+					dynamic.push(t);
+					reply.push(t);
+				}
 			}else{
-				reply=[t];
-				dynamic=[t]
+				if(Userid==passiveUserid){
+					reply=[d];
+					dynamic=[d];
+				}else{
+					reply=[t];
+					dynamic=[t]
+				}
 			}
-		}
-		
-		var iscmt=this.props.iscmt;
-		if(iscmt){
-			var lis=reply.map((v,i)=>{
-				if(v.class=='delete'){
-					return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.deletereply} >{v.name} </div>
-				}else if(v.class=='toReport'){
-					return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.toReportreply} >{v.name} </div>
-				}
-			})
-		}else{
-			var lis=dynamic.map((v,i)=>{
-				if(v.class=='delete'){
-					return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.deletedynamic} > {v.name}</div>
-				}else if(v.class=='recommend'){
-					if(this.props.IsRecommend==0){
-						return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.recommenddynamic} >{v.name} </div>
-					}else{
-						return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.recommenddynamic} >取消推荐</div>
-
+			
+			var iscmt=this.props.iscmt;
+			if(iscmt){
+				var lis=reply.map((v,i)=>{
+					if(v.class=='delete'){
+						return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.deletereply} >{v.name} </div>
+					}else if(v.class=='toReport'){
+						return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.toReportreply} >{v.name} </div>
 					}
-				}else if(v.class=='toReport'){
-					return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.toReportdynamic} >{v.name} </div>
-				}
-			})
-		}
+				})
+			}else{
+				var lis=dynamic.map((v,i)=>{
+					if(v.class=='delete'){
+						return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.deletedynamic} > {v.name}</div>
+					}else if(v.class=='recommend'){
+						if(this.props.IsRecommend==0){
+							return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.recommenddynamic} >{v.name} </div>
+						}else{
+							return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.recommenddynamic} >取消推荐</div>
 
+						}
+					}else if(v.class=='toReport'){
+						return <div className="weui-actionsheet__cell" key={i} onTouchEnd={this.toReportdynamic} >{v.name} </div>
+					}
+				})
+			}
+
+		}
+			
 
 
 

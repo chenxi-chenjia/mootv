@@ -35,32 +35,37 @@ class foundSecond extends React.Component{
 		this.offload=this.offload.bind(this);
 		this.add=this.add.bind(this);
 		this.addajax=this.addajax.bind(this);
+		this.refreshDiclis=this.refreshDiclis.bind(this);
 	}
-	
-	
-	//刷新评论列表
-	refreshDiclis(){
+
+
+	refreshDiclis(e){
 		var self=this;
-			var id=this.props.params.id.substring(1);
-			var u=pf.u+'GetContentDetail/';
+		var id=this.props.params.id.substring(1);
+		if(localStorage.moomtvUser){
 			var user=JSON.parse(localStorage.moomtvUser)
-			$.post({
-				url:pf.u+'GetDisList/',
-				data:pf.d+',"ID":"'+id+'","Userid":"'+Userid+'","page":"1"}',
-				success:function(e){
-					var v=JSON.parse(e);
-					if(v.ResCode==='10000'){
-						self.setState({
-							cdata:v.Data
-						})
-					} else{
-						self.setState({
-							ajaxflag:false
-						})
-					}
+			var Userid=user.UserID;
+		}else{
+			var Userid=this.state.Userid;
+		}
+		$.post({
+			url:pf.u+'GetDisList/',
+			data:pf.d+',"ID":"'+id+'","Userid":"'+Userid+'","page":"1"}',
+			success:function(e){
+				var v=JSON.parse(e);
+				if(v.ResCode==='10000'){
+					self.setState({
+						cdata:v.Data
+					})
+				}else{
+					self.setState({
+						cdata:[]
+					})
 				}
-			})
+			}
+		})
 	}
+	
 
 	//点击加载更多
 	addajax(){
@@ -223,7 +228,7 @@ class foundSecond extends React.Component{
 			}
 			return(
 				<div key={v.ID} className='Select' >
-					<focusarea.focus id={v.ID} data={focusData} hasUser={this.showloading} Userid={v.UserInfo.UserID} IsRecommend={this.state.data[0].IsRecommend} passiveUserid={this.state.data[0].UserInfo.UserID} refreshDiclis={this.refreshDiclis} />
+					<focusarea.focus id={v.ID} data={focusData} hasUser={this.showloading} Userid={v.UserInfo.UserID} IsRecommend={this.state.data[0].IsRecommend} passiveUserid={this.state.data[0].UserInfo.UserID} />
 					<div className="select-title">
 						<h4>
 							<span>{v.teamName}</span>
@@ -235,7 +240,7 @@ class foundSecond extends React.Component{
 					<div className="praiseNum" style={{display:(this.state.num<1?'none':'block')}} >
 						<span>共 {this.state.num} 条评论</span>
 					</div>
-					<commentList.list data={this.state.cdata} hasUser={this.showloading} id={v.ID} />
+					<commentList.list data={this.state.cdata} hasUser={this.showloading} id={v.ID} refreshDiclis={this.refreshDiclis} />
 					<Input.input hasUser={this.showloading} add={this.add}  id={this.state.id} />
 				</div>
 			)
@@ -244,13 +249,17 @@ class foundSecond extends React.Component{
 		var ac=this.state.ajaxflag?'addajax':'addajax off';
 		return(
 			<div id='foundSecond'>
-				<div style={{display:(this.state.loading?'none':'block')}}>
+				<div style={{display:(this.state.loading?'none':'block')}} >
 					{lis}
-					
 					<div className={ac}
 					onClick={this.addajax}
 					>{ajaxshow}</div>
+					<div className="Return">
+						<Link to='/'></Link>
+					</div>
+
 				</div>
+					
 				<loading.loading offload={this.offload} loading={this.state.loading} />
 			</div>
 		)

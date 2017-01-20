@@ -178,6 +178,7 @@ class Publish extends React.Component{
 								Waitingforloading:false
 							})
 							self.props.offPublish(false);
+							window.location='https://m.moomtv.tv/#/mine'
 						}
 					}
 				})
@@ -251,6 +252,7 @@ class Publish extends React.Component{
 								Waitingforloading:false
 							})
 							self.props.offPublish(false);
+							window.location='https://m.moomtv.tv/#/mine'
 						}
 					}
 				})

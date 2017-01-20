@@ -5,7 +5,6 @@ const focusbtn=require('./focusbtn.jsx');
 const loading=require('./loading.jsx');
 import {Link} from 'react-router';
 
-// const wxsdk=require('./wxsdk.js');
 
 
 
@@ -29,6 +28,8 @@ class week extends React.Component{
 		var Userid='';
 		if(localStorage.moomtvUser){
 			Userid=JSON.parse(localStorage.getItem("moomtvUser")).UserID;
+		}else{
+			Userid='';
 		}
 		var u=pf.u+'GetWorkStarts/';
 		var d=pf.d+',"Userid":"'+Userid+'","ID":"'+id+'"}';
@@ -48,37 +49,37 @@ class week extends React.Component{
 	
 
 					var us=window.location.href;
-					// $.post({
-					// 	url:pf.u+'SignTrueInfo/',
-					// 	data:pf.d+',"Address":"'+us+''+'"}',
-					// 	success:function(e){
-					// 		var v=JSON.parse(e);
-					// 		if(v.ResCode==='10000'){
-					// 			appId=v.Data.appId;
-					// 			nonceStr=v.Data.nonceStr;
-					// 			rawString=v.Data.rawString;
-					// 			signature=v.Data.signature;
-					// 			timestamp=v.Data.timestamp;
+					$.post({
+						url:pf.u+'SignTrueInfo/',
+						data:pf.d+',"Address":"'+us+''+'"}',
+						success:function(e){
+							var v=JSON.parse(e);
+							if(v.ResCode==='10000'){
+								appId=v.Data.appId;
+								nonceStr=v.Data.nonceStr;
+								rawString=v.Data.rawString;
+								signature=v.Data.signature;
+								timestamp=v.Data.timestamp;
 
-					// 			wx.config({
-					// 				debug: false,
-					// 				appId: appId,
-					// 				timestamp: timestamp,
-					// 				nonceStr: nonceStr,
-					// 				signature: signature,
-					// 				jsApiList: [
-					// 					'onMenuShareTimeline',
-					// 					'onMenuShareAppMessage',
-					// 					'onMenuShareQQ',
-					// 					'onMenuShareWeibo',
-					// 					'onMenuShareQZone'
-					// 				]
-					// 			});
+								wx.config({
+									debug: false,
+									appId: appId,
+									timestamp: timestamp,
+									nonceStr: nonceStr,
+									signature: signature,
+									jsApiList: [
+										'onMenuShareTimeline',
+										'onMenuShareAppMessage',
+										'onMenuShareQQ',
+										'onMenuShareWeibo',
+										'onMenuShareQZone'
+									]
+								});
 
 
-					// 		}
-					// 	}
-					// })
+							}
+						}
+					})
 
 					
 					wx.ready(function () {
@@ -193,12 +194,31 @@ class week extends React.Component{
 		var titlefu=this.state.data.TitleFu;
 		var user=this.state.user;
 		var height=$(window).height()/2;
-		var t='others/:'+this.state.uid;
+		var id=this.props.params.id.substring(1);
+		if(localStorage.moomtvUser){
+			var Userid=JSON.parse(localStorage.moomtvUser).UserID;
+		}else{
+			var Userid='';
+		}
+		
+		if(id==Userid){
+			var t='mine';
+		}else{
+			var t='others/:'+this.state.uid;
+		}
+
+		var sex='保密';
+		if(user.UserSex==1){
+			sex='男';
+		}else if(user.UserSex==2){
+			sex='女';
+		}
+		
 		return(
 			<div id="weekly">
 				<div className="topBox">
 					<div className="banner"  style={{backgroundImage:bannerUrl,height:height+'px'}}></div>
-					<div className="avater" style={{backgroundImage:'url('+user.UserHeader+'?imageView2/1/w/80/h/80/interlace/0/q/100)'}} >
+					<div className="avater" style={{backgroundImage:'url('+user.UserHeader+'?imageView2/2/w/100/h/100/interlace/0/q/100)'}} >
 						<Link to={t}></Link>
 					</div>
 				</div>
@@ -212,16 +232,16 @@ class week extends React.Component{
 				</div>
 				<div className="bottomBox">
 					<div className="avaterBox">
-						<div className="header" style={{backgroundImage:'url('+user.UserHeader+'?imageView2/1/w/200/h/200/interlace/0/q/100)'}}></div>
+						<div className="header" style={{backgroundImage:'url('+user.UserHeader+'?imageView2/2/w/100/h/100/interlace/0/q/100)'}}><Link to={t} ></Link></div>
 					</div>
 					<div className="name">
 						<h4>{user.UserNickName}</h4>
 					</div> 
 					<div className="information">
-						<h4><span className="sex">{user.UserSex}</span><span className="age">{user.UserAge}</span><span className="city">{user.UserPro}{user.UserCity}</span></h4>
+						<h4><span className="sex">{sex}</span><span className="age">{user.UserAge}岁</span><span className="city">{user.UserPro}{user.UserCity}</span></h4>
 					</div>
 					<div className="foucusarea">
-						<focusbtn.btn data='0' hasUser={this.showloading} id={this.state.uid} />
+						<focusbtn.btn data={user.IsFocus} hasUser={this.showloading} id={this.state.uid} />
 					</div>
 				</div>
 				<div className="footerBox">

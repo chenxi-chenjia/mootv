@@ -344,7 +344,9 @@ class SelectSecond extends React.Component{
 						<div className={f} >最新</div>
 					</div>
 				</div>
-
+				<div className="Return">
+					<Link to='/'></Link>
+				</div>
 				<selectDynamic.Select  hasUser={this.showloading} data={this.state.data}  />
 				<loading.loading offload={this.offload} loading={this.state.loading} />
 				<div className={ac}

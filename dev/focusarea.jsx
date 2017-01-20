@@ -47,26 +47,29 @@ class focus extends React.Component{
 
 	//删除我的评论
 	deleteMyComment(e){
-		e.preventDefault();
-		var self=this;
-		var Userid=JSON.parse(localStorage.moomtvUser).UserID;
-		var id=this.props.id;
-		var u=pf.u+'DeleteContentByID/';
-		var d=pf.d+',"Userid":"'+Userid+'","ID":"'+id+'"}';
-		$.post({
-			url:u,
-			data:d,
-			success:function(e){
-				var v=JSON.parse(e);
-				if(v.ResCode==='10000'){
-					self.props.deleteMyComment(true);
+		if(localStorage.moomtvUser){
+			e.preventDefault();
+			var self=this;
+			var Userid=JSON.parse(localStorage.moomtvUser).UserID;
+			var id=this.props.id;
+			var u=pf.u+'DeleteContentByID/';
+			var d=pf.d+',"Userid":"'+Userid+'","ID":"'+id+'"}';
+			$.post({
+				url:u,
+				data:d,
+				success:function(e){
+					var v=JSON.parse(e);
+					if(v.ResCode==='10000'){
+						self.props.deleteMyComment(true);
+					}
+					
 				}
-				
-			}
-		})
-		this.setState({
-			showDeleteFlag:false
-		})
+			})
+			this.setState({
+				showDeleteFlag:false
+			})
+		}
+			
 	}
 
 
@@ -85,12 +88,14 @@ class focus extends React.Component{
 		}
 
 		var id=data.id;
-		var Userid=JSON.parse(localStorage.moomtvUser).UserID;
-		if(id==Userid){
-			var t='mine';
-		}else{
-			var t='others/:'+id;
+		var t='others/:'+id
+		if(localStorage.moomtvUser){
+			var Userid=JSON.parse(localStorage.moomtvUser).UserID;
+			if(id==Userid){
+				t='mine';
+			}
 		}
+			
 		var dt=data.Time?data.Time:'';
 		var bg='url(' +data.UserHeader+')';
 		if(this.props.isDelete){
