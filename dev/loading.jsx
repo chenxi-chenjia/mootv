@@ -13,7 +13,9 @@ class loading extends React.Component{
 			verification:'',
 			obtion:false,
 			obshow:'获取验证码',
-			phoneFlag:true
+			phoneFlag:true,
+			errorFlag:false,
+			error:''
 		}
 		this.validation=this.validation.bind(this);
 		this.validationNum=this.validationNum.bind(this);
@@ -65,8 +67,26 @@ class loading extends React.Component{
 					if(v.ResCode==='10000'){
 						localStorage.moomtvUser=JSON.stringify(v.Data);
 						self.props.offload(false);
+					}else{
+						self.setState({
+							errorFlag:true,
+							error:'其输入正确的验证码或手机号'
+						})
+						setTimeout(function(){
+							errorFlag:false
+						})
 					}
 				}
+			})
+		}else if(v==''){
+			this.setState({
+				error:'请输入验证码',
+				errorFlag:true
+			})
+			setTimeout(function(){
+				self.setState({
+					errorFlag:false
+				})
 			})
 		}
 	}
@@ -91,7 +111,14 @@ class loading extends React.Component{
 				})
 			}else{
 				self.setState({
-					phoneFlag:false
+					phoneFlag:false,
+					error:'请输入一个有效的手机号码',
+					errorFlag:true
+				})
+				setTimeout(function(){
+					self.setState({
+						errorFlag:false
+					})
 				})
 			}
 		})
@@ -184,6 +211,7 @@ class loading extends React.Component{
 					> 立即登录 </div>
 					
 				</div>
+				<div className="weui-toptips weui-toptips_warn js_tooltips" style={{display:(this.state.errorFlag?'block':'none')}}>{this.state.error}</div>
 			</div>
 		)
 	}

@@ -13,7 +13,9 @@ class thumbUp extends React.Component{
 			num:'',
  			id:'',
  			zanAvatar:[],
- 			showomit:false
+ 			showomit:false,
+ 			error:'',
+ 			errorFlag:false
 		};
 		this.thumbUp=this.thumbUp.bind(this);
 		this.infocus=this.infocus.bind(this);
@@ -30,29 +32,51 @@ class thumbUp extends React.Component{
  				var ID=self.props.id;
  				var User=JSON.parse(localStorage.moomtvUser);
  				var Userid=User.UserID;
-				var u=pf.u+'SetZanContent/';
-				var d=pf.d+',"ID":"'+ID+'","Userid":"'+Userid+'"}';
-				$.post({
-					data:d,
-					url:u,
-					success:function(res){
-						var v=JSON.parse(res);
-						if(v.ResCode==='10000'){
-							var obj={
- 								Z_UserHeader:User.UserHeader,
- 								Z_UserID:User.UserID
- 							};
- 							var arr=self.state.zanAvatar;
- 							arr.push(obj);
-							self.setState({
-								num:self.state.num+1,
-								Is_Zan:'1',
-								zanAvatar:arr
-							})
+ 				if(ID==Userid){
+ 					self.setState({
+ 						error:'请不要为自己点赞',
+ 						errorFlag:true
+ 					})
+ 					setTimeout(function(){
+ 						self.setState({
+ 							errorFlag:false
+ 						})
+ 					})
+ 				}else{
+ 					var u=pf.u+'SetZanContent/';
+					var d=pf.d+',"ID":"'+ID+'","Userid":"'+Userid+'"}';
+					$.post({
+						data:d,
+						url:u,
+						success:function(res){
+							var v=JSON.parse(res);
+							if(v.ResCode==='10000'){
+								var obj={
+	 								Z_UserHeader:User.UserHeader,
+	 								Z_UserID:User.UserID
+	 							};
+	 							var arr=self.state.zanAvatar;
+	 							arr.push(obj);
+								self.setState({
+									num:self.state.num+1,
+									Is_Zan:'1',
+									zanAvatar:arr
+								})
+							}else{
+								self.setState({
+									errorFlag:true,
+									error:'对不起，请重新点赞'
+								})
+								setTimeout(function(){
+									self.setState({
+										errorFlag:false
+									})
+								})
+							}
 						}
-					}
-				})
-				$(e.target).addClass('off');
+					})
+					$(e.target).addClass('off');
+ 				}
 			}
 		}
 	}
@@ -108,6 +132,7 @@ class thumbUp extends React.Component{
 						<div className="praise">{this.state.num} 赞</div>
 					</Link>
 				</div>
+				<div className="weui-toptips weui-toptips_warn js_tooltips" style={{display:(this.state.errorFlag?'block':'none')}}>{this.state.error}</div>
 			</div>
 		)
 	}
